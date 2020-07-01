@@ -1,8 +1,8 @@
 /** 
  * X3DOM 1.8.2-dev
- * Build : 7146
- * Revision: cb45a9e765b34c0e6bd8a5e48c15272ed4d38c74
- * Date: Tue Jun 30 17:54:27 2020 -0400
+ * Build : 7147
+ * Revision: 5e8fc9c423fe656cf2a701157d0de8731a2c8a54
+ * Date: Tue Jun 30 20:55:03 2020 -0500
  */
 /**
  * X3DOM JavaScript Library
@@ -29,9 +29,9 @@ var x3dom = {
 
 x3dom.about = {
     version  : "1.8.2-dev",
-    build    : "7146",
-    revision : "cb45a9e765b34c0e6bd8a5e48c15272ed4d38c74",
-    date     : "Tue Jun 30 17:54:27 2020 -0400"
+    build    : "7147",
+    revision : "5e8fc9c423fe656cf2a701157d0de8731a2c8a54",
+    date     : "Tue Jun 30 20:55:03 2020 -0500"
 };
 
 /**
@@ -42139,6 +42139,16 @@ x3dom.registerNodeType(
             x3dom.nodeTypes.X3DScript.superClass.call( this, ctx );
 
             /**
+             * Contains all fields of shader parts.
+             * @var {x3dom.fields.MFNode} fields
+             * @memberof x3dom.nodeTypes.ComposedShader
+             * @initvalue x3dom.nodeTypes.Field
+             * @field x3d
+             * @instance
+             */
+            this.addField_MFNode( "fields", x3dom.nodeTypes.Field );
+
+            /**
              * The X3DScript source is read from the URL specified by the url field. When the url field contains no values
              *  ([]), this object instance is ignored.
              * @var {x3dom.fields.MFString} url
@@ -42157,6 +42167,35 @@ x3dom.registerNodeType(
             nodeChanged : function ()
             {
                 var ctx = {};
+
+                n = this._cf.fields.nodes.length;
+
+                for ( i = 0; i < n; i++ )
+                {
+                    var fieldName = this._cf.fields.nodes[ i ]._vf.name;
+                    ctx.xmlNode = this._cf.fields.nodes[ i ]._xmlNode;
+
+                    var needNode = false;
+
+                    if ( ctx.xmlNode === undefined || ctx.xmlNode === null )
+                    {
+                        ctx.xmlNode = document.createElement( "field" );
+                        needNode = true;
+                    }
+
+                    ctx.xmlNode.setAttribute( fieldName, this._cf.fields.nodes[ i ]._vf.value );
+
+                    var funcName = "this.addField_" + this._cf.fields.nodes[ i ]._vf.type + "(ctx, name);";
+                    var func = new Function( "ctx", "name", funcName );
+
+                    func.call( this, ctx, fieldName );
+
+                    if ( needNode )
+                    {
+                        ctx.xmlNode = null;    // cleanup
+                    }
+                }
+
                 ctx.xmlNode = this._xmlNode;
 
                 if ( ctx.xmlNode !== undefined && ctx.xmlNode !== null )
@@ -42227,6 +42266,48 @@ x3dom.registerNodeType(
 
             fieldChanged : function ( fieldName )
             {
+                var i,
+                    n = this._cf.fields.nodes.length;
+
+                for ( i = 0; i < n; i++ )
+                {
+                    var field = this._cf.fields.nodes[ i ]._vf.name;
+
+                    if ( field === fieldName )
+                    {
+                        var msg = this._cf.fields.nodes[ i ]._vf.value;
+
+                        try
+                        {
+                            this._vf[ field ].setValueByStr( msg );
+                        }
+                        catch ( exc1 )
+                        {
+                            try
+                            {
+                                switch ( ( typeof( this._vf[ field ] ) ).toString() )
+                                {
+                                    case "number":
+                                        this._vf[ field ] = +msg;
+                                        break;
+                                    case "boolean":
+                                        this._vf[ field ] = ( msg.toLowerCase() === "true" );
+                                        break;
+                                    case "string":
+                                        this._vf[ field ] = msg;
+                                        break;
+                                }
+                            }
+                            catch ( exc2 )
+                            {
+                                x3dom.debug.logError( "setValueByStr() NYI for " + typeof( this._vf[ field ] ) );
+                            }
+                        }
+
+                        break;
+                    }
+                }
+
                 if ( fieldName === "url" )
                 {
                     this._parentNodes.forEach( function ( script )
