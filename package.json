@@ -1,0 +1,12 @@
+{
+  "name": "x3domx3dscripting",
+  "version": "1.0.0",
+  "private": true,
+  "main": "app.js",
+  "dependencies": {
+    "express": "*"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}
