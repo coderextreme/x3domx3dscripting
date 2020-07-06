@@ -42254,7 +42254,17 @@ x3dom.registerNodeType(
                             } );
                         }
                     }
-		    eval ( ctx.xmlNode.textContent );
+		    let scripts = [];
+
+		    scripts[0] = new Function (
+				ctx.xmlNode.textContent+
+				`if (typeof initialize === 'function') {
+					initialize();
+				}
+				if (typeof shutdown === 'function') {
+					this.shutdown = shutdown;
+				}
+				return this;`)();
                 }
                 // else hope that url field was already set somehow
 
