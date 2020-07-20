@@ -1,0 +1,537 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- =================================================================== -->
+<!-- embedded X3D scene appears after html/head/script and style entries -->
+<!-- =================================================================== -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>ECMAScriptSaiTouchSensorIsOverEvent.x3d (X3dToX3dom.xslt X3DOM)</title>
+      <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge"/>
+      <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+      <meta name="generator"
+            content="https://www.web3d.org/x3d/stylesheets/X3dToX3dom.xslt"/>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- Numbered X3DOM release versions: https://doc.x3dom.org/download -->
+<!-- Developer X3DOM release version: https://doc.x3dom.org/download/dev -->
+<link rel="stylesheet"
+            type="text/css"
+            href="https://x3dom.org/download/dev/x3dom.css"/>
+      <script type="text/javascript"
+              src="../node/x3dom-full.debug.js"/>
+      <meta name="warning"
+            content="Webfonts must be loaded prior to using Text node in X3D scene... see https://x3dom.org/x3dom/example/x3dom_text.html"/>
+      <!-- X3DOM needs Web Fonts when an X3D Text node is included -->
+      <!-- adapted from https://x3dom.org/x3dom/example/x3dom_text.html and http://web.mit.edu/jmorzins/www/fonts.html -->
+      <style type="text/css">
+/* ============================================================================= */
+@font-face {
+  font-family: 'SERIF'; /* default original */
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roman'), url('Roman.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'SERIF'; /* default alternate */
+  font-style: normal;
+  font-weight: 700;
+  src: local('Times New Roman'), local('TimesNewRoman'), url('Times New Roman.ttf') format('truetype');
+}
+/* ============================================================================= */
+@font-face {
+  font-family: 'SANS'; /* default original */
+  font-style: normal;
+  font-weight: 400;
+  src: local('Arial'), url('Arial.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'SANS'; /* default alternate */
+  font-style: normal;
+  font-weight: 400;
+  src: local('Helvetica'), url('Helvetica.ttf') format('truetype');
+}
+/* ============================================================================= */
+@font-face {
+  font-family: 'TYPEWRITER'; /* default original */
+  font-style: normal;
+  font-weight: 900;
+  src: local('Courier'), url('Courier.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'TYPEWRITER'; /* default alternate */
+  font-style: normal;
+  font-weight: 900;
+  src: local('Courier New'), url('Courier New.ttf') format('truetype');
+}
+/* ============================================================================= */
+</style>
+      <style type="text/css" media="screen, print">
+.webfont { font-size:200%; font-family:'TYPEWRITER'; color:green;} /* Conversion TODO font families: SANS SERIF TYPEWRITER */
+</style>
+      <!-- Button zoom adapted from https://x3dom.org/docs/dev/tutorial/styling.html -->
+      <style type="text/css">
+
+html {width:100%;height:100%;margin:0;padding:0;}
+body {margin:0;padding:10px;width:100%;height:100%;}
+
+#rootX3dElement {
+    height: 450px;
+    width:  800px;
+    border: none;
+    display: block;
+    position:relative;
+    background:#000;
+}
+
+#toggleZoomButton {
+    position: absolute;
+    float: left;
+    z-index: 1;
+    top: 0px;
+    left: 0px;
+    width: 10em;
+    height: 2em;
+    border: none;
+    background-color: #202021;
+    color: #ccc;
+}
+
+#toggleZoomButton:hover {
+    background-color:blue;
+}
+</style>
+      <!-- https://x3dom.org/docs/dev/api.html and https://x3dom.org/docs/dev/configuration.html -->
+      <script type="text/javascript">
+var zoomed = false;
+var showStatistics = false;
+var showDebugLog   = true;
+
+function toggleZoom(button) {
+
+        var new_height;
+        var new_width;
+        var x3d_element;
+        
+        htmlBody       = document.getElementById('htmlBody');
+        htmlPageHeader = document.getElementById('htmlPageHeader');
+        htmlPageFooter = document.getElementById('htmlPageFooter');
+        x3d_element    = document.getElementById('rootX3dElement');
+
+        if (zoomed) // previous value
+        {
+                // unzoom
+                new_height = "450px";
+                new_width  = "800px";
+                button.innerHTML = "Zoom";
+                htmlPageHeader.style.display = "table-row";
+                htmlPageFooter.style.display = "table-row";
+                document.getElementById('checkBoxCell').style="text-align:right";
+                htmlBody.style.padding = "10px";
+                x3d_element.showStat   = showStatistics;
+                x3d_element.showLog    = showDebugLog;
+                x3d_element.runtime.debug(showDebugLog);
+                document.getElementById("details").hidden = (!showDebugLog);
+        } else {
+                // zoom
+                new_height = "100%";
+                new_width  = "100%";
+                button.innerHTML = "Unzoom";
+                htmlPageHeader.style.display = "none";
+                htmlPageFooter.style.display = "none";
+                htmlBody.style.padding = "0px";
+                x3d_element.showStat   = false;
+                x3d_element.showLog    = false;
+                x3d_element.runtime.debug(false);
+                document.getElementById("details").hidden = true;
+                // TODO how to hide browser interface?
+        }
+        zoomed = !zoomed; // toggle
+
+        x3d_element.style.height = new_height;
+        x3d_element.style.width  = new_width;
+}
+                    
+    // Browser information table adapted from http://www.w3schools.com/js/js_window_navigator.asp
+    
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        document.getElementById("browserCodeName"      ).innerHTML = navigator.appCodeName;
+        document.getElementById("browserAppName"       ).innerHTML = navigator.appName;
+        document.getElementById("browserAppVersion"    ).innerHTML = navigator.appVersion;
+        document.getElementById("browserCookieEnabled" ).innerHTML = navigator.cookieEnabled;
+        document.getElementById("browserPlatform"      ).innerHTML = navigator.platform;
+        document.getElementById("browserUserAgent"     ).innerHTML = navigator.userAgent;
+    if (navigator.systemLanguage)
+        document.getElementById("browserSystemLanguage").innerHTML = navigator.systemLanguage;
+    else
+        document.getElementById("browserSystemLanguage").innerHTML = navigator.language;
+    }, false);
+
+function toggleOverlayStatistics()
+{
+        showStatistics = !showStatistics; // toggle
+        x3d_element = document.getElementById('rootX3dElement');
+        x3d_element.runtime.statistics(showStatistics);
+}
+function toggleShowDebugLogs()
+{
+        showDebugLog  = !showDebugLog; // toggle
+        x3d_element = document.getElementById('rootX3dElement');
+        x3d_element.runtime.debug(showDebugLog);
+        document.getElementById("details").hidden = (!showDebugLog);
+}
+</script>
+      <script type="text/javascript">
+         var fullscreen = false;
+         
+         function toggleFullscreen ()
+         {
+           fullscreen = !fullscreen;
+           
+           if (fullscreen)
+           {
+             jQuery (".frame")
+               .css ("position", "fixed")
+               .css ("top", "0px")
+               .css ("left", "0px")
+               .css ("bottom", "0px")
+               .css ("right", "0px")
+               .css ("background", "#313131");
+                
+             jQuery (".maximize") .attr ("title", "Reduce frame, show console");
+         
+             jQuery (".browser") .css ("height", "100%");
+             jQuery ("X3DCanvas") .css ("height", "90%");
+           }
+           else
+           {
+             jQuery (".frame")
+               .css ("position", "inherit")
+               .css ("background", "none");
+               
+             jQuery (".maximize") .attr ("title", "Full Frame");
+         
+             jQuery (".browser") .css ("height", "initial");
+             jQuery ("X3DCanvas") .css ("height", "432px");
+           }
+         }
+</script>
+   </head>
+   <body id="htmlBody" onload="toggleFullscreen ();">
+      <table style="width:96%" id="htmlPageHeader">
+         <tr>
+            <td style="text-align:left;">
+               <h2>ECMAScriptSaiTouchSensorIsOverEvent.x3d</h2>
+            </td>
+            <td id="checkBoxCell" style="text-align:right"> (<a href="https://www.web3d.org/x3d/content/examples/Basic/X3dSpecifications/ECMAScriptSaiTouchSensorIsOverEvent.x3d"
+                  title="View .x3d scene">.x3d scene</a>, 
+<a href="https://www.web3d.org/x3d/content/examples/Basic/X3dSpecifications/ECMAScriptSaiTouchSensorIsOverEvent.html"
+                  title="View .html pretty-print source">pretty-print source</a>, 
+<input id="checkBoxOverlayStatistics"
+                      type="checkbox"
+                      value="Overlay scene statistics"
+                      onclick="toggleOverlayStatistics();"/>
+               <span title="Overlay scene performance statistics">statistics</span>, 
+<input id="checkBoxShowDebugLogs"
+                      type="checkbox"
+                      value="Display debugger logs"
+                      checked="checked"
+                      onclick="toggleShowDebugLogs();"/>
+               <span title="Show meta information and debug logs">info &amp; logs</span>, <a href="https://doc.x3dom.org" onclick="target='_blank';">X3DOM Player</a>)</td>
+         </tr>
+         <tr>
+            <td colspan="2">
+               <p>
+                  <span class="webfont">Java Scene Authoring Interface (JSAI) scene and source code example that demonstrate a scripted response to a TouchSensor isOver event by changing the color of a Box from blue to red.</span>
+               </p>
+            </td>
+         </tr>
+      </table>
+      <div>
+<!-- ================================ -->
+<!-- embedded X3D scene appears here: -->
+<!-- Conversion note: the following HTML button is overlaid on top of the page -->
+         <button id="toggleZoomButton" onclick="toggleZoom(this); return false;">Zoom</button>
+<X3D id='rootX3dElement' showStat='false' showLog='true' showProgress='bar'
+ profile='Immersive' version='3.3' noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+<head>
+<meta content='ECMAScriptSaiTouchSensorIsOverEvent.x3d' name='title'/>
+<meta content='Java Scene Authoring Interface (JSAI) scene and source code example that demonstrate a scripted response to a TouchSensor isOver event by changing the color of a Box from blue to red.' name='description'/>
+<meta content='X3D Working Group' name='creator'/>
+<meta content='23 February 2005' name='created'/>
+<meta content='28 October 2019' name='modified'/>
+<meta content='https://www.web3d.org/x3d/content/examples/X3dSceneAuthoringHints.html#Scripts' name='reference'/>
+<meta content='X3D Abstract Specification, Scripting Component, 9.2.3 Scripting language protocols https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/components/networking.html#ScriptingLanguageProtocols' name='reference'/>
+<meta content='https://www.web3d.org/files/specifications/19777-1/V3.3/Part1/X3D_ECMAScript.html' name='reference'/>
+<meta content='X3D language bindings, ISO/IEC 19777-1, Part 1: ECMAScript, B.2 touchSensor isOver event' name='specificationSection'/>
+<meta content='https://www.web3d.org/files/specifications/19777-1/V3.3/Part1/examples.html#TouchSensorIsOverEvent' name='specificationUrl'/>
+<meta content='X3D-Edit 3.3, https://savage.nps.edu/X3D-Edit' name='generator'/>
+<meta content='https://www.web3d.org/x3d/content/examples/Basic/X3dSpecifications/ECMAScriptSaiTouchSensorIsOverEvent.x3d' name='identifier'/>
+<meta content='../license.html' name='license'/>
+</head>
+<Scene>
+<WorldInfo title='ECMAScriptSaiTouchSensorIsOverEvent.x3d'/>
+<Group bboxCenter='0 0 0' bboxSize='-1 -1 -1'>
+<Shape bboxCenter='0 0 0' bboxSize='-1 -1 -1'>
+<Appearance>
+<Material DEF='MAT' diffuseColor='0 0 1'/>
+</Appearance>
+<Box size='2 2 2' solid='true'/>
+</Shape>
+<TouchSensor DEF='TS'/>
+</Group>
+<X3DScript DEF='SC' url='&quot;ECMAScriptSaiTouchSensorIsOverEventScript.js&quot; &quot;https://www.web3d.org/x3d/content/examples/Basic/X3dSpecifications/ECMAScriptSaiTouchSensorIsOverEventScript.js&quot;'>
+<field accessType='inputOnly' name='isOver' type='SFBool'/>
+<field accessType='outputOnly' name='diffuseColor_changed' type='SFColor'/>
+</X3DScript>
+<ROUTE fromField='isOver' fromNode='TS' toField='isOver' toNode='SC'/>
+<ROUTE fromField='diffuseColor_changed' fromNode='SC' toField='set_diffuseColor' toNode='MAT'/>
+</Scene>
+</X3D>
+
+<!-- ================================ -->
+</div>
+      <div id="details">
+         <p style="clear:both;">&nbsp;</p>
+         <table style="border:0px solid; border-spacing:0px; margin:auto; margin-top:20px;margin-left:5%;">
+            <tr style="background-color:silver; border-color:silver;">
+               <th style="text-align:right;">X3D&nbsp;Scene </th>
+               <th style="text-align:left;"> &nbsp; </th>
+               <th style="text-align:left;"> Metadata </th>
+            </tr>
+            <tr style="background-color:silver; border-color:silver;">
+               <td style="text-align:right;color:green;">
+                  <i>archive</i>
+               </td>
+               <td> &nbsp; </td>
+               <td>
+                  <i>
+                     <a href="https://www.web3d.org/x3d/content/examples/Basic/X3dSpecifications">https://www.web3d.org/x3d/content/examples/Basic/X3dSpecifications</a>
+                  </i>
+               </td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">title</td>
+               <td> &nbsp; </td>
+               <td>
+                  <a href="ECMAScriptSaiTouchSensorIsOverEvent.x3d">ECMAScriptSaiTouchSensorIsOverEvent.x3d</a>
+               </td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">description</td>
+               <td> &nbsp; </td>
+               <td>Java Scene Authoring Interface (JSAI) scene and source code example that demonstrate a scripted response to a TouchSensor isOver event by changing the color of a Box from blue to red.</td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">creator</td>
+               <td> &nbsp; </td>
+               <td>X3D Working Group</td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">created</td>
+               <td> &nbsp; </td>
+               <td>23 February 2005</td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">modified</td>
+               <td> &nbsp; </td>
+               <td>28 October 2019</td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">reference</td>
+               <td> &nbsp; </td>
+               <td>
+                  <a href="https://www.web3d.org/x3d/content/examples/X3dSceneAuthoringHints.html#Scripts">https://www.web3d.org/x3d/content/examples/X3dSceneAuthoringHints.html#Scripts</a>
+               </td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">reference</td>
+               <td> &nbsp; </td>
+               <td>
+                  <a href="X3D Abstract Specification, Scripting Component, 9.2.3 Scripting language protocols https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/components/networking.html#ScriptingLanguageProtocols">X3D Abstract Specification, Scripting Component, 9.2.3 Scripting language protocols https://www.web3d.org/documents/specifications/19775-1/V3.3/Part01/components/networking.html#ScriptingLanguageProtocols</a>
+               </td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">reference</td>
+               <td> &nbsp; </td>
+               <td>
+                  <a href="https://www.web3d.org/files/specifications/19777-1/V3.3/Part1/X3D_ECMAScript.html">https://www.web3d.org/files/specifications/19777-1/V3.3/Part1/X3D_ECMAScript.html</a>
+               </td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">specificationSection</td>
+               <td> &nbsp; </td>
+               <td>X3D language bindings, ISO/IEC 19777-1, Part 1: ECMAScript, B.2 touchSensor isOver event</td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">specificationUrl</td>
+               <td> &nbsp; </td>
+               <td>
+                  <a href="https://www.web3d.org/files/specifications/19777-1/V3.3/Part1/examples.html#TouchSensorIsOverEvent">https://www.web3d.org/files/specifications/19777-1/V3.3/Part1/examples.html#TouchSensorIsOverEvent</a>
+               </td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">generator</td>
+               <td> &nbsp; </td>
+               <td>X3D-Edit 3.3, <a href="https://savage.nps.edu/X3D-Edit">https://savage.nps.edu/X3D-Edit</a>
+               </td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">identifier</td>
+               <td> &nbsp; </td>
+               <td>
+                  <a href="https://www.web3d.org/x3d/content/examples/Basic/X3dSpecifications/ECMAScriptSaiTouchSensorIsOverEvent.x3d">https://www.web3d.org/x3d/content/examples/Basic/X3dSpecifications/ECMAScriptSaiTouchSensorIsOverEvent.x3d</a>
+               </td>
+            </tr>
+            <tr>
+               <td style="text-align:right;color:green">license</td>
+               <td> &nbsp; </td>
+               <td>
+                  <a href="../license.html">../license.html</a>
+               </td>
+            </tr>
+            <tr>
+               <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr style="background-color:silver;border-color:silver;">
+               <th style="text-align:right;"> HTML&nbsp;Browser </th>
+               <th/>
+               <th style="text-align:left;"> Information </th>
+            </tr>
+            <tr>
+               <td style="text-align:right;"> Browser code name: </td>
+               <td/>
+               <td id="browserCodeName"/>
+            </tr>
+            <tr>
+               <td style="text-align:right;"> Browser application name: </td>
+               <td/>
+               <td id="browserAppName"/>
+            </tr>
+            <tr>
+               <td style="text-align:right;"> Browser version: </td>
+               <td/>
+               <td id="browserAppVersion"/>
+            </tr>
+            <tr>
+               <td style="text-align:right;"> Cookies enabled: </td>
+               <td/>
+               <td id="browserCookieEnabled"/>
+            </tr>
+            <tr>
+               <td style="text-align:right;"> Platform: </td>
+               <td/>
+               <td id="browserPlatform"/>
+            </tr>
+            <tr>
+               <td style="text-align:right;"> User Agent: </td>
+               <td/>
+               <td id="browserUserAgent"/>
+            </tr>
+            <tr>
+               <td style="text-align:right;"> System language: </td>
+               <td/>
+               <td id="browserSystemLanguage"/>
+            </tr>
+            <tr>
+               <td colspan="3">
+                  <div id="htmlPageFooter">
+                     <table border="1"
+                            style="float:left; margin:auto; margin-top:20px; border:1px solid black;">
+                        <caption style="text-align:center;background-color:silver;border-color:silver; padding:4px;">
+                           <b>X3DOM node coverage</b>
+                        </caption>
+                        <tr style="text-align:center; padding:4px; border:1px solid black;">
+                           <th> Supported nodes found </th>
+                           <th> Unsupported nodes found </th>
+                           <th> Partial support</th>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                           <td style="text-align:left;vertical-align:text-top;padding:4px;">
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#Appearance"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">Appearance</span>
+                              </a>
+                              <br/>
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#Box"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">Box</span>
+                              </a>
+                              <br/>
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#field"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">field</span>
+                              </a>
+                              <br/>
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#Group"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">Group</span>
+                              </a>
+                              <br/>
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#head"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">head</span>
+                              </a>
+                              <br/>
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#Material"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">Material</span>
+                              </a>
+                              <br/>
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#meta"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">meta</span>
+                              </a>
+                              <br/>
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#ROUTE"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">ROUTE</span>
+                              </a>
+                              <br/>
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#Scene"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">Scene</span>
+                              </a>
+                              <br/>
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#Shape"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">Shape</span>
+                              </a>
+                              <br/>
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#TouchSensor"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">TouchSensor</span>
+                              </a>
+                              <br/>
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#WorldInfo"
+                                 target="_blank">
+                                 <span style="color:green; text-decoration-color:green; moz-text-decoration-color:green;">WorldInfo</span>
+                              </a>
+                              <br/> 
+                           </td>
+                           <td style="text-align:left;vertical-align:text-top;padding:4px;">
+                              <a href="https://www.web3d.org/x3d/tooltips/X3dTooltips.html#Script"
+                                 target="_blank">
+                                 <span style="color:red; text-decoration-color:red; moz-text-decoration-color:red;">Script</span>
+                              </a>
+                              <br/> 
+                           </td>
+                           <td style="text-align:left;vertical-align:text-top;padding:4px;"> </td>
+                        </tr>
+                        <tr style="text-align:center; background-color:silver;border-color:silver; padding:6px;">
+                           <td colspan="3" style="cellpadding:3px"> &nbsp;&nbsp;&nbsp; References: <a href="https://doc.x3dom.org/check" onclick="target='_blank';">X3DOM browser check</a>,
+                                <a href="https://doc.x3dom.org" onclick="target='_blank';">X3DOM home</a>,
+                                <a href="https://doc.x3dom.org" onclick="target='_blank';">X3DOM documentation</a>,
+                                <a href="https://x3dom.org/x3dom/test/functional/dumpNodeTypeTree.html"
+                                 onclick="target='_blank';">X3DOM list of supported nodes</a>,
+                                and
+                                <a href="https://www.web3d.org/x3d/content/examples/X3dResources.html"
+                                 onclick="target='_blank';">X3D Resources</a> &nbsp;&nbsp;&nbsp; </td>
+                        </tr>
+                     </table>
+                  </div>
+               </td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

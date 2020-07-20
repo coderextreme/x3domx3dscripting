@@ -1,8 +1,8 @@
 /** 
  * X3DOM 1.8.2-dev
- * Build : 7147
- * Revision: 5e8fc9c423fe656cf2a701157d0de8731a2c8a54
- * Date: Tue Jun 30 20:55:03 2020 -0500
+ * Build : 7149
+ * Revision: 3363e9a7b1db36f3db2e04ac076cde35d4a19b19
+ * Date: Mon Jul 6 15:59:25 2020 -0500
  */
 /**
  * X3DOM JavaScript Library
@@ -29,9 +29,9 @@ var x3dom = {
 
 x3dom.about = {
     version  : "1.8.2-dev",
-    build    : "7147",
-    revision : "5e8fc9c423fe656cf2a701157d0de8731a2c8a54",
-    date     : "Tue Jun 30 20:55:03 2020 -0500"
+    build    : "7149",
+    revision : "3363e9a7b1db36f3db2e04ac076cde35d4a19b19",
+    date     : "Mon Jul 6 15:59:25 2020 -0500"
 };
 
 /**
@@ -42168,6 +42168,8 @@ x3dom.registerNodeType(
             {
                 var ctx = {};
 
+		var script_text = "";
+
                 n = this._cf.fields.nodes.length;
 
                 for ( i = 0; i < n; i++ )
@@ -42211,12 +42213,13 @@ x3dom.registerNodeType(
                         that._id = "default";
                         that._vf.url = new x3dom.fields.MFString( [ this._getDefaultScript() ] );
 
+			    // TODO, url is an array
                         xhr.open( "GET", url, false );
                         xhr.onload = function ()
                         {
                             that._vf.url = new x3dom.fields.MFString( [] );
                             that._vf.url.push( xhr.response );
-			    eval ( xhr.response );
+			    script_text += xhr.response;
                             that._id = originalID;
                             that.fieldChanged( "url" );
                         };
@@ -42254,17 +42257,24 @@ x3dom.registerNodeType(
                             } );
                         }
                     }
-		    let scripts = [];
+		    if (typeof scripts === 'undefined') {
+                        var scripts = [];
+                    }
+		    scripts.push(new Function (
+			    	// url comes before CDATA section, per
+                                script_text+"\n"+ctx.xmlNode.textContent+
+                                `if (typeof initialize === 'function') {
+                                        initialize();
+                                } else {
+					this.initialize = function() {};
+				}
+                                if (typeof shutdown === 'function') {
+                                        this.shutdown = shutdown;
+                                } else {
+					this.shutdown = function() {};
+                                }
+                                return this;`)());
 
-		    scripts[0] = new Function (
-				ctx.xmlNode.textContent+
-				`if (typeof initialize === 'function') {
-					initialize();
-				}
-				if (typeof shutdown === 'function') {
-					this.shutdown = shutdown;
-				}
-				return this;`)();
                 }
                 // else hope that url field was already set somehow
 
