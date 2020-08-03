@@ -1,4 +1,4 @@
-﻿# Examples of X3Script to test and node.js express web server for serving files from localhost
+﻿# Examples of X3DScript to test and node.js express web server for serving files from localhost
 
 * Download and install git
 
