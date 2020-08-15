@@ -279,9 +279,9 @@ function toggleShowDebugLogs()
 </Shape>
 <TouchSensor DEF='TS'/>
 </Group>
-<X3DScript DEF='SC' url='&quot;ECMAScriptSaiTouchSensorIsOverEventScript.js&quot; &quot;https://www.web3d.org/x3d/content/examples/Basic/X3dSpecifications/ECMAScriptSaiTouchSensorIsOverEventScript.js&quot;'>
-<field accessType='inputOnly' name='isOver' type='SFBool'/>
-<field accessType='outputOnly' name='diffuseColor_changed' type='SFColor'/>
+<X3DScript DEF='SC' url='&quot;../node/ECMAScriptSaiTouchSensorIsOverEventScript.js&quot; &quot;https://www.web3d.org/x3d/content/examples/Basic/X3dSpecifications/ECMAScriptSaiTouchSensorIsOverEventScript.js&quot;'>
+<field accessType='inputOnly' name='isOver' type='SFBool' value='FALSE'/>
+<field accessType='outputOnly' name='diffuseColor_changed' type='SFColor' value='0 1 0'/>
 </X3DScript>
 <ROUTE fromField='isOver' fromNode='TS' toField='isOver' toNode='SC'/>
 <ROUTE fromField='diffuseColor_changed' fromNode='SC' toField='set_diffuseColor' toNode='MAT'/>

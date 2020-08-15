@@ -1,8 +1,8 @@
 /** 
  * X3DOM 1.8.2-dev
- * Build : 7149
- * Revision: 3363e9a7b1db36f3db2e04ac076cde35d4a19b19
- * Date: Mon Jul 6 15:59:25 2020 -0500
+ * Build : 7150
+ * Revision: a468a55035066730911f40f3303f151c3bcd50d6
+ * Date: Sun Jul 12 09:38:30 2020 -0500
  */
 /**
  * X3DOM JavaScript Library
@@ -29,9 +29,9 @@ var x3dom = {
 
 x3dom.about = {
     version  : "1.8.2-dev",
-    build    : "7149",
-    revision : "3363e9a7b1db36f3db2e04ac076cde35d4a19b19",
-    date     : "Mon Jul 6 15:59:25 2020 -0500"
+    build    : "7150",
+    revision : "a468a55035066730911f40f3303f151c3bcd50d6",
+    date     : "Sun Jul 12 09:38:30 2020 -0500"
 };
 
 /**
@@ -42185,7 +42185,9 @@ x3dom.registerNodeType(
                         needNode = true;
                     }
 
-                    ctx.xmlNode.setAttribute( fieldName, this._cf.fields.nodes[ i ]._vf.value );
+                    if (this._cf.fields.nodes[ i ]._vf.value !== null) {
+	                ctx.xmlNode.setAttribute( fieldName, this._cf.fields.nodes[ i ]._vf.value );
+		    }
 
                     var funcName = "this.addField_" + this._cf.fields.nodes[ i ]._vf.type + "(ctx, name);";
                     var func = new Function( "ctx", "name", funcName );
