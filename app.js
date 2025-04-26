@@ -1,72 +1,48 @@
 var express = require('express');
 var fs = require('fs');
 var https = require('https');
+var path = require('path'); // Add path module
 var app = express();
 var port = process.env.PORT || 3000;
-var path = require('path');
 
+// Serve static files from the current directory
 app.use(express.static(__dirname));
-// app.use(express.static('data'));
-// app.use(express.static('html'));
 
-function send(res, data, type, next) {
-	sendNoNext(res, data, type);
-	next();
-}
+// Define MIME types for common file extensions
+const mimeTypes = {
+    '.html': 'text/html',
+    '.xhtml': 'application/xhtml+xml',
+    '.js': 'text/javascript',
+    '.css': 'text/css',
+    '.json': 'application/json',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.svg': 'image/svg+xml',
+    '.x3d': 'model/x3d+xml',
+    '.wrl': 'model/vrml',
+    '.vs': 'text/plain',  // or 'x-shader/x-vertex' if you prefer, but 'text/plain' is safer
+    '.fs': 'text/plain',  // or 'x-shader/x-fragment' if you prefer, but 'text/plain' is safer
+    // Add more MIME types as needed
+};
 
-function sendNoNext(res, data, type) {
-	// console.error("Type", type);
-	try {
-		if (!type.startsWith("image/")) {
-			res.header("Content-Type", type);
-		}
-	} catch (e) {
-		console.error(e);
-	}
-	res.send(data);
-}
+// Basic Logging Middleware
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`); // Simple request logging
+    next();
+});
 
-function magic(path, type) {
-    app.get(path, function(req, res, next) {
-	var url = req._parsedUrl.pathname;
-	try {
-		while (url.startsWith("/")) {
-			url = url.substr(1);
-		}
-		console.error("Requested", url);
-		var wind = url.indexOf("www.web3d.org");
-		if (wind >= 0) {
-			url = url.substring(wind);
-			var cwind = examples.indexOf("www.web3d.org");
-			url = examples.substr(0, cwind) + url;
-		} else {
-			url = __dirname+"/"+url;
-		}
-		console.error("Reading", url);
-		var data = fs.readFileSync(url);
-		if (type.startsWith("image") || type.startsWith("audio") || type.startsWith("video")) {
-			sendNoNext(res, data, type);
-		} else {
-			sendNoNext(res, data.toString(), type);
-		}
-	} catch (e) {
-		console.error(e, "Couldn't read", url);
-		next();
-	}
-    });
-}
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
-magic("/*.xhtml", "application/xhtml+xml");
-magic("/*.html", "text/html");
-magic("*.vs", "text/plain");//"x-shader/x-vertex");
-magic("*.fs", "text/plain");//"x-shader/x-fragment");
-magic("*.x3d", "model/x3d+xml");
-
+// HTTPS server setup
 https.createServer({
   key: fs.readFileSync('server.key'),
   cert: fs.readFileSync('server.cert')
-}, app)
-.listen(3000, 'localhost', function () {
-  console.log('Example app listening on port 3000! Go to https://localhost:3000/')
-})
-
+}, app).listen(port, 'localhost', () => {
+  console.log(`Server listening on port ${port}! Go to https://localhost:${port}/`);
+});

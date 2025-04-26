@@ -1,0 +1,72 @@
+var express = require('express');
+var fs = require('fs');
+var https = require('https');
+var app = express();
+var port = process.env.PORT || 3000;
+var path = require('path');
+
+app.use(express.static(__dirname));
+// app.use(express.static('data'));
+// app.use(express.static('html'));
+
+function send(res, data, type, next) {
+	sendNoNext(res, data, type);
+	next();
+}
+
+function sendNoNext(res, data, type) {
+	// console.error("Type", type);
+	try {
+		if (!type.startsWith("image/")) {
+			res.header("Content-Type", type);
+		}
+	} catch (e) {
+		console.error(e);
+	}
+	res.send(data);
+}
+
+function magic(path, type) {
+    app.get(path, function(req, res, next) {
+	var url = req._parsedUrl.pathname;
+	try {
+		while (url.startsWith("/")) {
+			url = url.substr(1);
+		}
+		console.error("Requested", url);
+		var wind = url.indexOf("www.web3d.org");
+		if (wind >= 0) {
+			url = url.substring(wind);
+			var cwind = examples.indexOf("www.web3d.org");
+			url = examples.substr(0, cwind) + url;
+		} else {
+			url = __dirname+"/"+url;
+		}
+		console.error("Reading", url);
+		var data = fs.readFileSync(url);
+		if (type.startsWith("image") || type.startsWith("audio") || type.startsWith("video")) {
+			sendNoNext(res, data, type);
+		} else {
+			sendNoNext(res, data.toString(), type);
+		}
+	} catch (e) {
+		console.error(e, "Couldn't read", url);
+		next();
+	}
+    });
+}
+
+magic("*.xhtml", "application/xhtml+xml");
+magic("*.html", "text/html");
+magic("*.vs", "text/plain");//"x-shader/x-vertex");
+magic("*.fs", "text/plain");//"x-shader/x-fragment");
+magic("*.x3d", "model/x3d+xml");
+
+https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+}, app)
+.listen(3000, 'localhost', function () {
+  console.log('Example app listening on port 3000! Go to https://localhost:3000/')
+})
+
